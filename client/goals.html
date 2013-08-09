@@ -1,0 +1,87 @@
+<head>
+  <title>Goals List</title>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Goals List</h1>{{loginButtons}}
+		{{> content}}
+	</div>
+</body>
+
+<template name="content">
+	{{#if signed_in}}
+		<div id="goals-list">
+			<div id="focusarea-container">
+				{{> focusareas}}
+			</div>
+			<div id="goalitems-container" class="accordion">
+				{{> goalitems}}
+			</div>
+		</div>
+	{{else}}
+		<div class="well">
+			<h3>
+				Achieve Your Goals! Choose to be Your Best.
+			</h3>
+		</div>
+	{{/if}}
+</template>
+
+<template name="focusareas">
+	{{#if loading}}
+		<div id="focusareas" class="btn-group">Loading...</div>
+	{{else}}
+		<div id="focusareas" class="btn-group">
+	       {{#each entries}}
+	         	<div class="focusarea btn btn-inverse">
+	           		{{name}}
+				</div>
+			{{/each}}
+			
+			{{#if new_fa}}
+		       	<div class="focusarea btn" style="border:0; box-shadow:0; padding:0;">
+		        	<input type="text" id="add-fa" value="" />
+				</div>
+	       	{{else}}
+	        	<div class="focusarea btn btn-inverse" id="btnNewFa">&plus;</div>
+	     	{{/if}}
+	     </div>
+	     <h3>
+	     {{current_fa.name}}
+	     </h3>
+	{{/if}}
+</template>
+
+<template name="goalitems">
+	{{#if any_fa_selected}}
+		{{#if loading}}
+			<div id="goals" class="accordion-group">Loading...</div>
+		{{else}}
+			{{#each goals}}
+				<div id="goals" class="goal-item accordion-group">
+					<div class="goal-header accordion-heading">
+						<a class="accordion-toggle" data-toggle="collapse" data-parent="goalitems-container" href="#{{_id}}" style="font-size:18px">
+							{{goal}}
+						</a>
+					</div>	
+					<div id="{{_id}}" class="accordion-body collapse in">
+						<div class="accordion-inner">
+						{{#each tasks}}
+							{{> tasklist}}
+						{{/each}}
+						</div>
+					</div>
+				</div>
+				<br/>
+			{{/each}}
+		{{/if}}
+	{{/if}}
+</template>
+
+<template name="tasklist">
+	<div class="display">
+	    <input class="check" name="markdone" type="checkbox" {{done_checkbox}} />
+	    <span class="task">{{task}}</span>
+	</div>
+</template>
